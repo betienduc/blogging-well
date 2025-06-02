@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>BloggingWell - Blogging</title>
+  <script src="js/firebase-config.js"></script>
+  <link rel="stylesheet" href="css/footer&header.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/login-signup.css">
+  <link rel="stylesheet" href="css/blogging.css">
+</head>
+
+<body>
+
+  <nav>
+    <h1>Blogging<span style="color: chartreuse;">Well</span></h1>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="#">Blogging</a></li>
+    </ul>
+  </nav>
+
+  <div class="blogging-card">
+
+  </div>
+
+  <script src=" https://cdnjs.cloudflare.com/ajax/libs/firebase/11.1.0/firebase-app-compat.min.js"
+    integrity="sha512-+sREIsioPWovonmPhKdOdLYSVtjTVf1egJBBXyB/F03Rr2F/ZfNMQUH2xaSGpYIQhIcCl2o48QVMbzr4VcEHfA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/11.1.0/firebase-firestore-compat.min.js"
+    integrity="sha512-4ks3H+mrA5UqojL1qbiNoGTIFvoptBKiAP7BrSpH+GdBgbfFY3+ZAUvMFLHT0WmXxx3L+9dU3eF5yN4Iwh4oJA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/11.1.0/firebase-storage-compat.min.js"
+    integrity="sha512-UWiTgu3Muffq292khq+2MIrG+G87b+ll2Y2TaCRv6jSZ8fdtCBPst1dTQIPfJV1/xWWOlgCdgLltdS0VJgUb9w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src=" https://kit.fontawesome.com/2270289db0.js" crossorigin="anonymous"></script>
+
+  <script type="module">
+    import { auth } from "./js/firebase-config.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+    const navLinks = document.querySelector('.nav-links');
+    navLinks.innerHTML = '';
+
+    onAuthStateChanged(auth, (user) => {
+      navLinks.innerHTML = '';
+
+      if (user) {
+        const bloggingLi = document.createElement('li');
+        bloggingLi.innerHTML = `<a href="home.html">Home</a>`;
+        navLinks.appendChild(bloggingLi);
+
+        const logoutLi = document.createElement('li');
+        logoutLi.innerHTML = `<a href="#" id="logout">Logout</a>`;
+        navLinks.appendChild(logoutLi);
+
+        document.getElementById("logout").addEventListener("click", async (e) => {
+          e.preventDefault();
+          await signOut(auth);
+          window.location.reload();
+        });
+      } else {
+
+        const loginLi = document.createElement('li');
+        loginLi.innerHTML = `<a href="login.html">Login</a>`;
+        navLinks.appendChild(loginLi);
+
+        const signupLi = document.createElement('li');
+        signupLi.innerHTML = `<a href="signup.html">Signup</a>`;
+        navLinks.appendChild(signupLi);
+      }
+    });
+  </script>
+  <script src="js/blogging.js"></script>
+</body>
+
+</html>
