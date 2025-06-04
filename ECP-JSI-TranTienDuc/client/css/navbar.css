@@ -51,3 +51,48 @@ nav li a:hover {
   color: white;
   text-shadow: 0 0 2px rgba(255, 255, 255, 0.675);
 }
+
+#post-list {
+  text-align: left;
+  align-items: start;
+  justify-content: start;
+  padding: 10px;
+  padding-inline: 20px;
+  position: relative;
+}
+#post_list h2 {
+  color: #1e3050;
+  border-left: 4px solid #1e3050;
+  padding-left: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  background-color: white;
+}
+
+.post-item {
+  background: white;
+  border: 2px solid #1e3050;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.post-item h3 {
+  color: #1e3050;
+  margin-bottom: 0.5rem;
+}
+
+.post-item a {
+  text-decoration: none;
+  color: #1e3050;
+}
+
+.post-item a:hover {
+  text-decoration: underline;
+}
+
+.post-item p {
+  color: #333;
+  line-height: 1.6;
+}

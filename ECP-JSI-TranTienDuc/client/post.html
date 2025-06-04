@@ -7,7 +7,8 @@
   <title>Blog bài viết</title>
   <link rel="stylesheet" href="css/footer&header.css" />
   <link rel="stylesheet" href="css/navbar.css" />
-  <link rel="stylesheet" href="css/blog.css" />
+  <link rel="stylesheet" href="css/blogging.css" />
+  <link rel="stylesheet" href="css/login-signup.css" />
 </head>
 
 <body>
@@ -20,18 +21,58 @@
   </nav>
 
   <main class="blog-container">
-    <div id="blog-post">Đang tải bài viết...</div>
+    <div id="blog-post" class="blog-card">Đang tải bài viết...</div>
   </main>
 
   <footer>
     <p>&copy; 2025 betienduc. All rights reserved.</p>
   </footer>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"></script>
+  <script type="module">
+    import {
+      getDocs,
+      collection,
+      query,
+      where,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    import { auth, db } from "./js/firebase-config.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
-  <!-- Script đọc bài viết -->
+    const navLinks = document.querySelector('.nav-links');
+    navLinks.innerHTML = '';
+
+    onAuthStateChanged(auth, (user) => {
+      navLinks.innerHTML = '<li><a href="home.html">Home</a></li>';
+
+      if (user) {
+        const bloggingLi = document.createElement('li');
+        bloggingLi.innerHTML = `<a href="blogging.html">Blogging</a>`;
+        navLinks.appendChild(bloggingLi);
+
+        const logoutLi = document.createElement('li');
+        logoutLi.innerHTML = `<a href="#" id="logout">Logout</a>`;
+        navLinks.appendChild(logoutLi);
+
+        document.getElementById("logout").addEventListener("click", async (e) => {
+          e.preventDefault();
+          await signOut(auth);
+          window.location.reload();
+        });
+      } else {
+
+        const loginLi = document.createElement('li');
+        loginLi.innerHTML = `<a href="login.html">Login</a>`;
+        navLinks.appendChild(loginLi);
+
+        const signupLi = document.createElement('li');
+        signupLi.innerHTML = `<a href="signup.html">Signup</a>`;
+        navLinks.appendChild(signupLi);
+      }
+    });
+  </script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
     import {
@@ -39,12 +80,7 @@
       doc,
       getDoc
     } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      // 🔁 Dán cấu hình Firebase của bạn ở đây
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    import { auth, db } from "./js/firebase-config.js";
 
     const blogBox = document.getElementById("blog-post");
 

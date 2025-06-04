@@ -97,3 +97,20 @@ button[type="submit"]:active {
   box-shadow: 0.4em 0.4em 0.4em rgba(0, 0, 0, 0.3);
   position: relative;
 }
+
+.blog-card {
+  margin-top: 70px;
+  margin-bottom: 93px;
+  background-color: white;
+  color: #1e3050;
+  padding: 3em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: auto;
+  padding: 2rem;
+  box-shadow: 0.4em 0.4em 0.4em rgba(0, 0, 0, 0.3);
+  position: relative;
+}

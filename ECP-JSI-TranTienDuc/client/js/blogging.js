@@ -55,33 +55,6 @@ async function loadPendingPosts() {
   });
 }
 
-async function saveBlog() {
-  const inputTitle = document.getElementById("title").value;
-  const inputContent = document.getElementById("content").value;
-  const inputSlug = toSlug(inputTitle);
-  const user = auth.currentUser;
-
-  if (!user) {
-    alert("You need to login first!");
-    window.location.href = "login.html";
-    return;
-  }
-
-  const authorName = user.displayName || user.email;
-
-  const docRef = await addDoc(collection(db, "posts"), {
-    title: inputTitle,
-    content: inputContent,
-    slug: inputSlug,
-    createdAt: new Date(),
-    author: authorName,
-    approved: false,
-  });
-
-  alert("Successfully posted!");
-  window.location.href = `post.html?id=${docRef.id}`;
-}
-
 async function loadBlog() {
   onAuthStateChanged(auth, async (user) => {
     bloggingCard.innerHTML = "";
@@ -103,8 +76,36 @@ async function loadBlog() {
           </div>
           <input type="text" id="title" placeholder="Title"><br>
           <textarea id="content" placeholder="Content"></textarea><br>
-          <button onclick="saveBlog()" type="submit" id="submit">Submit</button>
+          <button type="submit" id="submit">Submit</button>
         `;
+
+      const submitBlogBtn = document.getElementById("submit");
+      submitBlogBtn.addEventListener("click", async () => {
+        const inputTitle = document.getElementById("title").value;
+        const inputContent = document.getElementById("content").value;
+        const inputSlug = toSlug(inputTitle);
+        const user = auth.currentUser;
+
+        if (!user) {
+          alert("You need to login first!");
+          window.location.href = "login.html";
+          return;
+        }
+
+        const authorName = user.displayName || user.email;
+
+        const docRef = await addDoc(collection(db, "posts"), {
+          title: inputTitle,
+          content: inputContent,
+          slug: inputSlug,
+          createdAt: new Date(),
+          author: authorName,
+          approved: false,
+        });
+
+        alert("Successfully posted!");
+        window.location.href = `post.html?id=${docRef.id}`;
+      });
     } else if (role === "admin") {
       bloggingCard.innerHTML = `
           <div class="banner">
