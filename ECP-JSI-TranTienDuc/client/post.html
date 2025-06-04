@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog bài viết</title>
+  <link rel="stylesheet" href="css/footer&header.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/blog.css" />
+</head>
+
+<body>
+  <nav>
+    <h1>Blogging<span style="color: chartreuse;">Well</span></h1>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="blogging.html">Blogging</a></li>
+    </ul>
+  </nav>
+
+  <main class="blog-container">
+    <div id="blog-post">Đang tải bài viết...</div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 betienduc. All rights reserved.</p>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"></script>
+
+  <!-- Script đọc bài viết -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      // 🔁 Dán cấu hình Firebase của bạn ở đây
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const blogBox = document.getElementById("blog-post");
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    if (!id) {
+      blogBox.innerHTML = "<p>Không tìm thấy bài viết.</p>";
+    } else {
+      const docRef = doc(db, "posts", id);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        blogBox.innerHTML = "<p>Bài viết không tồn tại.</p>";
+      } else {
+        const post = docSnap.data();
+        blogBox.innerHTML = `
+          <article class="blog-post">
+            <h1>${post.title}</h1>
+            <p class="blog-meta">Tác giả: <strong>${post.author || "Ẩn danh"}</strong> | Ngày đăng: ${new Date(post.createdAt.seconds * 1000).toLocaleDateString()}</p>
+            <div class="blog-content">${post.content.replace(/\n/g, "<br>")}</div>
+          </article>
+        `;
+      }
+    }
+  </script>
+</body>
+
+</html>

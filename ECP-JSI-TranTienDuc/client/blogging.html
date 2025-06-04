@@ -3,7 +3,6 @@
 
 <head>
   <title>BloggingWell - Blogging</title>
-  <script src="js/firebase-config.js"></script>
   <link rel="stylesheet" href="css/footer&header.css">
   <link rel="stylesheet" href="css/navbar.css">
   <link rel="stylesheet" href="css/login-signup.css">
@@ -24,17 +23,9 @@
 
   </div>
 
-  <script src=" https://cdnjs.cloudflare.com/ajax/libs/firebase/11.1.0/firebase-app-compat.min.js"
-    integrity="sha512-+sREIsioPWovonmPhKdOdLYSVtjTVf1egJBBXyB/F03Rr2F/ZfNMQUH2xaSGpYIQhIcCl2o48QVMbzr4VcEHfA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/11.1.0/firebase-firestore-compat.min.js"
-    integrity="sha512-4ks3H+mrA5UqojL1qbiNoGTIFvoptBKiAP7BrSpH+GdBgbfFY3+ZAUvMFLHT0WmXxx3L+9dU3eF5yN4Iwh4oJA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/11.1.0/firebase-storage-compat.min.js"
-    integrity="sha512-UWiTgu3Muffq292khq+2MIrG+G87b+ll2Y2TaCRv6jSZ8fdtCBPst1dTQIPfJV1/xWWOlgCdgLltdS0VJgUb9w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js"></script>
 
   <script src=" https://kit.fontawesome.com/2270289db0.js" crossorigin="anonymous"></script>
 
@@ -74,7 +65,7 @@
       }
     });
   </script>
-  <script src="js/blogging.js"></script>
+  <script type="module" src="js/blogging.js"></script>
 </body>
 
 </html>

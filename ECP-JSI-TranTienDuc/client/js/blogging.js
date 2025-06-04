@@ -5,9 +5,11 @@ import {
   where,
   updateDoc,
   doc,
+  addDoc,
+  getDoc,
 } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { auth, db } from "./firebase.js";
+import { auth, db } from "./firebase-config.js";
 
 const bloggingCard = document.querySelector(".blogging-card");
 function toSlug(str) {
@@ -56,23 +58,25 @@ async function loadPendingPosts() {
 async function saveBlog() {
   const inputTitle = document.getElementById("title").value;
   const inputContent = document.getElementById("content").value;
-  const inputSlug = toSlug(title);
+  const inputSlug = toSlug(inputTitle);
   const user = auth.currentUser;
 
-  if (user) {
-    const authorName = user.displayName;
-    const docRef = await db.collection("posts").add({
-      title: inputTitle,
-      content: inputContent,
-      slug: inputSlug,
-      createdAt: new Date(),
-      author: authorName,
-      approved: false,
-    });
-  } else {
+  if (!user) {
     alert("You need to login first!");
     window.location.href = "login.html";
+    return;
   }
+
+  const authorName = user.displayName || user.email;
+
+  const docRef = await addDoc(collection(db, "posts"), {
+    title: inputTitle,
+    content: inputContent,
+    slug: inputSlug,
+    createdAt: new Date(),
+    author: authorName,
+    approved: false,
+  });
 
   alert("Successfully posted!");
   window.location.href = `post.html?id=${docRef.id}`;
@@ -110,8 +114,9 @@ async function loadBlog() {
           </div>
           <div id="pending-posts">Đang tải bài viết...</div>
         `;
-      loadPendingPosts(); // 👈 Gọi hàm admin duyệt bài
+      loadPendingPosts();
     }
   });
 }
-loadBlog();
+
+document.addEventListener("DOMContentLoaded", loadBlog);

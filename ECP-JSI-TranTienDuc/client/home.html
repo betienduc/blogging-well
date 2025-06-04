@@ -18,6 +18,10 @@
     </ul>
   </nav>
 
+  <div class="post-list" id="post-list">
+
+  </div>
+
   <footer>
     <div class="footer-container">
       <div class="footer-left">
@@ -38,23 +42,22 @@
     </div>
   </footer>
 
-  <script src=" https://cdnjs.cloudflare.com/ajax/libs/firebase/11.1.0/firebase-app-compat.min.js"
-    integrity="sha512-+sREIsioPWovonmPhKdOdLYSVtjTVf1egJBBXyB/F03Rr2F/ZfNMQUH2xaSGpYIQhIcCl2o48QVMbzr4VcEHfA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/11.1.0/firebase-firestore-compat.min.js"
-    integrity="sha512-4ks3H+mrA5UqojL1qbiNoGTIFvoptBKiAP7BrSpH+GdBgbfFY3+ZAUvMFLHT0WmXxx3L+9dU3eF5yN4Iwh4oJA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/11.1.0/firebase-storage-compat.min.js"
-    integrity="sha512-UWiTgu3Muffq292khq+2MIrG+G87b+ll2Y2TaCRv6jSZ8fdtCBPst1dTQIPfJV1/xWWOlgCdgLltdS0VJgUb9w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js"></script>
 
 
   <script src="https://kit.fontawesome.com/2270289db0.js" crossorigin="anonymous"></script>
   <script src="js/firebase-config.js"></script>
   <script type="module">
-    import { auth } from "./js/firebase-config.js";
+    import {
+      getDocs,
+      collection,
+      query,
+      where,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    import { auth, db } from "./js/firebase-config.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
     const navLinks = document.querySelector('.nav-links');
@@ -88,6 +91,39 @@
         navLinks.appendChild(signupLi);
       }
     });
+
+    async function loadPosts() {
+      const postContainer = document.getElementById("post-list");
+      postContainer.innerHTML = "<h2>Bài viết mới nhất:</h2>";
+
+      const q = query(
+        collection(db, "posts"),
+        where("approved", "==", true),
+        orderBy("createdAt", "desc")
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        postContainer.innerHTML += "<p>Chưa có bài viết nào được duyệt.</p>";
+        return;
+      }
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const post = document.createElement("div");
+        post.className = "post-item";
+        post.innerHTML = `
+      <h3><a href="post.html?id=${doc.id}">${data.title}</a></h3>
+      <p><strong>Tác giả:</strong> ${data.author || "Ẩn danh"}</p>
+      <p>${data.content.substring(0, 100)}...</p>
+      <hr>
+    `;
+        postContainer.appendChild(post);
+      });
+    }
+
+    loadPosts();
   </script>
 </body>
 
