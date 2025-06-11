@@ -16,7 +16,10 @@
     <ul class="nav-links"></ul>
   </nav>
 
+
   <div class="post-list card" id="post-list"></div>
+  <button id="back-to-top">▲</button>
+
 
   <footer>
     <div class="footer-container">
@@ -47,7 +50,8 @@
       collection,
       query,
       where,
-      orderBy
+      orderBy,
+      limit
     } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
     import {
       onAuthStateChanged,
@@ -79,6 +83,7 @@
     });
 
     async function loadPosts() {
+      const maxPosts = 10;
       const postContainer = document.getElementById("post-list");
       const header = document.createElement("h2");
       header.textContent = "Bài viết mới nhất:";
@@ -88,16 +93,19 @@
       header.style.marginBottom = "1.5rem";
       header.style.fontSize = "1.8rem";
       header.style.backgroundColor = "white";
-      postContainer.appendChild(header);
-
+      postContainer.innerHTML += "Đang tải bài viết...";
       const q = query(
         collection(db, "posts"),
         where("approved", "==", true),
-        orderBy("createdAt", "desc")
+        orderBy("createdAt", "desc"),
+        limit(maxPosts)
       );
 
       const querySnapshot = await getDocs(q);
-
+      if (!querySnapshot.empty) {
+        postContainer.innerHTML = "";
+        postContainer.appendChild(header);
+      }
       if (querySnapshot.empty) {
         postContainer.innerHTML += "<p>Chưa có bài viết nào được duyệt.</p>";
         return;
@@ -110,7 +118,8 @@
         post.innerHTML = `
           <h3><a href="post.html?id=${docSnap.id}">${data.title}</a></h3>
           <p><strong>Tác giả:</strong> ${data.author || "Ẩn danh"}</p>
-          <p>${data.content.substring(0, 100)}...</p>
+          <div class="divider" style="width: 100% !important;">Preview</div>
+          <p>${data.content.substring(0, 200)}...</p>
           <hr>
         `;
         postContainer.appendChild(post);
@@ -123,8 +132,8 @@
         console.error("Lỗi khi load bài viết:", error);
       }
     });
-
   </script>
+  <script src="js/back-to-top.js"></script>
 </body>
 
 </html>

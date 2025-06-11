@@ -38,6 +38,11 @@ nav ul {
 
 nav li {
   margin: 0 10px;
+  transition: all 0.3s cubic-bezier(0.86, 0.12, 0.06, 1.91);
+}
+
+nav li:hover {
+  scale: 1.1;
 }
 
 nav li a {
@@ -53,12 +58,17 @@ nav li a:hover {
 }
 
 #post-list {
+  display: flex;
+  flex-direction: column;
   text-align: left;
   align-items: start;
   justify-content: start;
   padding: 10px;
   padding-inline: 20px;
   position: relative;
+  max-height: none !important;
+  overflow-y: visible !important;
+  flex: 1 !important;
 }
 #post_list h2 {
   color: #1e3050;
