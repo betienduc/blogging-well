@@ -55,7 +55,7 @@ async function loadPendingPosts() {
   });
 }
 
-async function loadBlog() {
+async function saveBlog() {
   onAuthStateChanged(auth, async (user) => {
     bloggingCard.innerHTML = "";
 
@@ -120,4 +120,4 @@ async function loadBlog() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", loadBlog);
+document.addEventListener("DOMContentLoaded", saveBlog);

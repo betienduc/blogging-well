@@ -15,7 +15,7 @@
   <nav>
     <h1>Blogging<span style="color: chartreuse;">Well</span></h1>
     <ul class="nav-links">
-      <li><a href="home.html">Home</a></li>
+      <li><a href="index.html">Home</a></li>
       <li><a href="blogging.html">Blogging</a></li>
     </ul>
   </nav>
@@ -45,7 +45,7 @@
     navLinks.innerHTML = '';
 
     onAuthStateChanged(auth, (user) => {
-      navLinks.innerHTML = '<li><a href="home.html">Home</a></li>';
+      navLinks.innerHTML = '<li><a href="index.html">Home</a></li>';
 
       if (user) {
         const bloggingLi = document.createElement('li');
