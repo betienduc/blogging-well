@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/login-signup.css" />
   <link rel="stylesheet" href="css/footer&header.css" />
   <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="icon" href="img/content-creation.png">
 </head>
 
 <body>
@@ -117,7 +118,7 @@
         post.className = "post-item";
         post.innerHTML = `
           <h3><a href="post.html?id=${docSnap.id}">${data.title}</a></h3>
-          <p><strong>Tác giả:</strong> ${data.author || "Ẩn danh"}</p>
+          <p><strong>Tác giả:</strong> ${data.author || "Ẩn danh"} | Ngày đăng: ${new Date(post.createdAt.seconds * 1000).toLocaleDateString()}</p>
           <div class="divider" style="width: 100% !important;">Preview</div>
           <p>${data.content.substring(0, 200)}...</p>
           <hr>
