@@ -42,9 +42,8 @@ async function loadPendingPosts() {
     container.innerHTML = "<p>Không có bài viết nào đang chờ duyệt.</p>";
     return;
   }
-
+  container.innerHTML = "";
   querySnapshot.forEach((docSnap) => {
-    container.innerHTML = "";
     const data = docSnap.data();
     const div = document.createElement("div");
     const preview =
@@ -63,7 +62,10 @@ async function loadPendingPosts() {
         
         <button onclick="approvePost('${
           docSnap.id
-        }')" class="approve-btn">✅ Duyệt</button>
+        }')" class="approve-btn" onclick="
+          const thisBtn = this;
+          thisBtn.innerHTML = 'Đang làm việc với bài viết...';
+        ">✅ Duyệt</button>
         <hr>
       `;
     container.appendChild(div);
@@ -100,6 +102,7 @@ async function saveBlog() {
         const inputContent = document.getElementById("content").value;
         const inputSlug = toSlug(inputTitle);
         const user = auth.currentUser;
+        submitBlogBtn.innerHTML = "Đang làm việc với bài viết...";
 
         if (!user) {
           alert("You need to login first!");
