@@ -115,13 +115,15 @@
       querySnapshot.forEach((docSnap) => {
         const data = docSnap.data();
         const post = document.createElement("div");
+        const preview = data.content.length > 200
+          ? data.content.substring(0, 200) + "..."
+          : data.content;
         post.className = "post-item";
         post.innerHTML = `
           <h3><a href="post.html?id=${docSnap.id}">${data.title}</a></h3>
           <p><strong>Tác giả:</strong> ${data.author || "Ẩn danh"} | Ngày đăng: ${new Date(data.createdAt.seconds * 1000).toLocaleDateString()}</p>
           <div class="divider" style="width: 100% !important;">Preview</div>
-          <p>${data.content.substring(0, 200)}...</p>
-          <hr>
+          <div class="pale-wrap"><p>${preview}</p></div>
         `;
         postContainer.appendChild(post);
       });

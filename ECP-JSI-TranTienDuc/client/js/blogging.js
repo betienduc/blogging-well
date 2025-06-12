@@ -35,20 +35,35 @@ async function loadPendingPosts() {
   const q = query(collection(db, "posts"), where("approved", "==", false));
   const querySnapshot = await getDocs(q);
   const container = document.getElementById("pending-posts");
-  container.innerHTML = "";
+  container.innerHTML = "Đang tải bài viết...";
 
   if (querySnapshot.empty) {
+    container.innerHTML = "";
     container.innerHTML = "<p>Không có bài viết nào đang chờ duyệt.</p>";
     return;
   }
 
   querySnapshot.forEach((docSnap) => {
+    container.innerHTML = "";
     const data = docSnap.data();
     const div = document.createElement("div");
+    const preview =
+      data.content.length > 200
+        ? data.content.substring(0, 200) + "..."
+        : data.content;
     div.innerHTML = `
         <h3>${data.title}</h3>
-        <p>${data.content.substring(0, 100)}...</p>
-        <button onclick="approvePost('${docSnap.id}')">✅ Duyệt</button>
+        <p><strong>Tác giả:</strong> ${
+          data.author || "Ẩn danh"
+        } | Ngày đăng: ${new Date(
+      data.createdAt.seconds * 1000
+    ).toLocaleDateString()}</p>
+          <div class="divider" style="width: 100% !important;">Preview</div>
+        <div class="pale-wrap"><p>${preview}</p></div>
+        
+        <button onclick="approvePost('${
+          docSnap.id
+        }')" class="approve-btn">✅ Duyệt</button>
         <hr>
       `;
     container.appendChild(div);

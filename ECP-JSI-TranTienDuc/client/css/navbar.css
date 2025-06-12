@@ -106,3 +106,10 @@ nav li a:hover {
   color: #333;
   line-height: 1.6;
 }
+
+.pale-wrap {
+  flex: 1;
+  border-radius: 4px;
+  padding: 1rem;
+  border: 1px solid #0a4a614c;
+}
